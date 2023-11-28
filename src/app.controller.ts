@@ -14,4 +14,9 @@ export class AppController {
   getPing(): string {
     return this.appService.getPing();
   }
+
+  @Get()
+  test(): string {
+    return "test github webhook";
+  }
 }
