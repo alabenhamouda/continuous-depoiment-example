@@ -14,12 +14,4 @@ export class AppController {
   getPing(): string {
     return this.appService.getPing();
   }
-
-  @Get('/docs')
-  @Redirect('https://docs.nestjs.com', 301)
-  getDocs() {
-    return {
-      url: 'https://docs.nestjs.com/v5/'
-    }
-  }
 }
