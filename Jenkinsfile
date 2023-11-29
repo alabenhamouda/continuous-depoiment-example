@@ -7,42 +7,42 @@ pipeline {
     }
 
     environment {
-        AZURE = credentials('b8989b85-3121-4662-bea6-7d41277deba9')
+        ARM = credentials('b8989b85-3121-4662-bea6-7d41277deba9')
     }
 
     stages {
-        stage('Install Dependencies') {
-            steps {
-                script {
-                    sh 'npm install'
-                }
-            }
-        }
+        // stage('Install Dependencies') {
+        //     steps {
+        //         ansiColor('xterm') {
+        //             sh 'npm install'
+        //         }
+        //     }
+        // }
 
-        stage('Build') {
-            steps {
-                script {
-                    sh 'npm run build'
-                }
-            }
-        }
+        // stage('Build') {
+        //     steps {
+        //         ansiColor('xterm') {
+        //             sh 'npm run build'
+        //         }
+        //     }
+        // }
 
-        stage('Run Tests') {
-            steps {
-                script {
-                    sh 'npm run test'
-                }
-            }
-        }
+        // stage('Run Tests') {
+        //     steps {
+        //         ansiColor('xterm') {
+        //             sh 'npm run test'
+        //         }
+        //     }
+        // }
 
         stage('Terraform Setup') {
             steps {
-                script {
+                ansiColor('xterm') {
                     sh '''
-                        export ARM_CLIENT_ID=${AZURE_CLIENT_ID}
-                        export ARM_CLIENT_SECRET=${AZURE_CLIENT_SECRET}
-                        export ARM_SUBSCRIPTION_ID=${AZURE_SUBSCRIPTION_ID}
-                        export ARM_TENANT_ID=${AZURE_TENANT_ID}
+                        export ARM_CLIENT_ID=${ARM_CLIENT_ID}
+                        export ARM_CLIENT_SECRET=${ARM_CLIENT_SECRET}
+                        export ARM_SUBSCRIPTION_ID=${ARM_SUBSCRIPTION_ID}
+                        export ARM_TENANT_ID=${ARM_TENANT_ID}
                         terraform init -input=false
                     '''
                 }
@@ -51,15 +51,15 @@ pipeline {
 
         stage('Terraform Apply') {
             steps {
-                script {
-                    sh 'terraform apply -input=false -auto-approve'
+                ansiColor('xterm') {
+                    sh 'terraform apply -input=false -auto-approve -var "client_id=$ARM_CLIENT_ID" -var "client_secret=$ARM_CLIENT_SECRET" -var "subscription_id=$ARM_SUBSCRIPTION_ID" -var "tenant_id=$ARM_TENANT_ID'
                 }
             }
         }
 
         stage('Cleanup') {
             steps {
-                script {
+                ansiColor('xterm') {
                     cleanWs()
                 }
             }
