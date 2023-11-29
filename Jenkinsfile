@@ -8,6 +8,7 @@ pipeline {
 
     environment {
         ARM = credentials('b8989b85-3121-4662-bea6-7d41277deba9')
+        ARM_ACCESS_KEY = credentials('37b62107-d4a3-430b-beaf-3cc32187d553')
     }
 
     stages {
@@ -43,7 +44,7 @@ pipeline {
                         export ARM_CLIENT_SECRET=${ARM_CLIENT_SECRET}
                         export ARM_SUBSCRIPTION_ID=${ARM_SUBSCRIPTION_ID}
                         export ARM_TENANT_ID=${ARM_TENANT_ID}
-                        terraform init -input=false
+                        terraform init -input=false -backend-config="access_key=$ARM_ACCESS_KEY"
                     '''
                 }
             }

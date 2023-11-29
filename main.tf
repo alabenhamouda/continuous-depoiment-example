@@ -4,6 +4,12 @@ terraform {
             source  =   "hashicorp/azurerm"
         }
     }
+    backend "azurerm" {
+        resource_group_name  = "tfstate"
+        storage_account_name = "tfstate10403"
+        container_name       = "tfstate"
+        key                  = "terraform.tfstate"
+    }
 }
 
 provider "azurerm" {
@@ -11,7 +17,7 @@ provider "azurerm" {
   client_secret   =   var.client_secret
   subscription_id =   var.subscription_id
   tenant_id       =   var.tenant_id
-  
+
   features {}
 }
 
