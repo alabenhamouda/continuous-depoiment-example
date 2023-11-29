@@ -3,6 +3,7 @@ pipeline {
 
     tools { 
         nodejs "node"
+        docker "docker"
         "org.jenkinsci.plugins.terraform.TerraformInstallation" "terraform"
     }
 
@@ -54,6 +55,32 @@ pipeline {
             steps {
                 script {
                     sh 'terraform apply -input=false -auto-approve -var "client_id=$ARM_CLIENT_ID" -var "client_secret=$ARM_CLIENT_SECRET" -var "subscription_id=$ARM_SUBSCRIPTION_ID" -var "tenant_id=$ARM_TENANT_ID"'
+                }
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                script {
+                    sh 'docker build -t alabenhmouda/cd-example .'
+                }
+            }
+        }
+
+        stage('Docker Push') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'cfcabbf3-82d8-40f5-9311-983452136145', usernameVariable: 'DOCKERUSER', passwordVariable: 'DOCKERPASS')]) {
+                    sh 'docker login -u $DOCKERUSER -p $DOCKERPASS'
+                    sh 'docker push alabenhmouda/cd-example'
+                }
+            }
+        }
+
+        stage('Azure Deploy') {
+            steps {
+                script {
+                    sh 'az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID'
+                    sh 'az webapp create --resource-group cd-test-rg --plan cd-app-service-plan --name cd-app-service --deployment-container-image-name alabenhmouda/cd-example'
                 }
             }
         }
