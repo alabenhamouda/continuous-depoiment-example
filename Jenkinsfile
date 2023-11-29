@@ -11,29 +11,29 @@ pipeline {
     }
 
     stages {
-        // stage('Install Dependencies') {
-        //     steps {
-        //         script {
-        //             sh 'npm install'
-        //         }
-        //     }
-        // }
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    sh 'npm install'
+                }
+            }
+        }
 
-        // stage('Build') {
-        //     steps {
-        //         script {
-        //             sh 'npm run build'
-        //         }
-        //     }
-        // }
+        stage('Build') {
+            steps {
+                script {
+                    sh 'npm run build'
+                }
+            }
+        }
 
-        // stage('Run Tests') {
-        //     steps {
-        //         script {
-        //             sh 'npm run test'
-        //         }
-        //     }
-        // }
+        stage('Run Tests') {
+            steps {
+                script {
+                    sh 'npm run test'
+                }
+            }
+        }
 
         stage('Terraform Setup') {
             steps {
