@@ -13,7 +13,7 @@ pipeline {
     stages {
         // stage('Install Dependencies') {
         //     steps {
-        //         ansiColor('xterm') {
+        //         script {
         //             sh 'npm install'
         //         }
         //     }
@@ -21,7 +21,7 @@ pipeline {
 
         // stage('Build') {
         //     steps {
-        //         ansiColor('xterm') {
+        //         script {
         //             sh 'npm run build'
         //         }
         //     }
@@ -29,7 +29,7 @@ pipeline {
 
         // stage('Run Tests') {
         //     steps {
-        //         ansiColor('xterm') {
+        //         script {
         //             sh 'npm run test'
         //         }
         //     }
@@ -37,7 +37,7 @@ pipeline {
 
         stage('Terraform Setup') {
             steps {
-                ansiColor('xterm') {
+                script {
                     sh '''
                         export ARM_CLIENT_ID=${ARM_CLIENT_ID}
                         export ARM_CLIENT_SECRET=${ARM_CLIENT_SECRET}
@@ -51,7 +51,7 @@ pipeline {
 
         stage('Terraform Apply') {
             steps {
-                ansiColor('xterm') {
+                script {
                     sh 'terraform apply -input=false -auto-approve -var "client_id=$ARM_CLIENT_ID" -var "client_secret=$ARM_CLIENT_SECRET" -var "subscription_id=$ARM_SUBSCRIPTION_ID" -var "tenant_id=$ARM_TENANT_ID'
                 }
             }
@@ -59,7 +59,7 @@ pipeline {
 
         stage('Cleanup') {
             steps {
-                ansiColor('xterm') {
+                script {
                     cleanWs()
                 }
             }
