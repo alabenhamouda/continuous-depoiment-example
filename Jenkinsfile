@@ -40,7 +40,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        terraform init -input=false -backend-config="access_key=$ARM_ACCESS_KEY -var "client_id=$ARM_CLIENT_ID" -var "client_secret=$ARM_CLIENT_SECRET" -var "subscription_id=$ARM_SUBSCRIPTION_ID" -var "tenant_id=$ARM_TENANT_ID""
+                        terraform init -input=false -backend-config="access_key=$ARM_ACCESS_KEY" -var "client_id=$ARM_CLIENT_ID" -var "client_secret=$ARM_CLIENT_SECRET" -var "subscription_id=$ARM_SUBSCRIPTION_ID" -var "tenant_id=$ARM_TENANT_ID"
                     '''
                 }
             }
